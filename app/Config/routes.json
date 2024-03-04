@@ -1,0 +1,19 @@
+[
+  {
+    "name": "home",
+    "route": "/",
+    "controller": "ProductController",
+    "method": "home"
+  },
+  {
+    "name": "getProductsAjax",
+    "route": "/getProductsAjax",
+    "controller": "ProductController",
+    "method": "getProductsAjax"
+  },
+  {
+    "name": "not-found",
+    "controller": "CommonController",
+    "method": "notFound"
+  }
+]
