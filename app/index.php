@@ -2,8 +2,8 @@
 
 use Model\Router;
 
-require_once "init.php";
 require_once "autoloader.php";
+require_once "init.php";
 
 // RESOURCE MANAGEMENT
 
@@ -12,10 +12,4 @@ if (isStaticResourceRequest()) {
 }
 
 // APPLICATION START
-
-//$d = \Model\DatabaseManager::getDatabaseManager();
-//$с = \Model\CategoryManager::getInstance();
-//$p = \Model\ProductManager::getInstance();
-
-
 Router::getInstance()->route($_SERVER['REQUEST_URI']);

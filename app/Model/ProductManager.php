@@ -9,13 +9,13 @@ class ProductManager
 {
     private static ?ProductManager $instance = null;
     private readonly DatabaseManager $db;
-    private const TABLE_NAME = 'products';
+    public const TABLE_NAME = 'products';
     private const CHARSET = 'utf8mb4_unicode_ci';
 
     public function __construct()
     {
         $this->db = DatabaseManager::getDatabaseManager();
-        if (!$this->isTableExists(self::TABLE_NAME)) {
+        if (!$this->db->isTableExists(self::TABLE_NAME)) {
             $this->install();
             $this->fillDemoData();
         }
@@ -37,45 +37,38 @@ class ProductManager
         price DECIMAL(" . Product::constraints()['max_price_length'] . ", " . Product::constraints()['price_precision'] . ") NOT NULL ,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         category_id INT(6) UNSIGNED,
-        FOREIGN KEY (category_id) REFERENCES categories(id)
+        FOREIGN KEY (category_id) REFERENCES " . CategoryManager::TABLE_NAME . "(id)
         ) CHARACTER SET utf8mb4 COLLATE " . self::CHARSET;
-
         if (!$this->db->conn->query($createTableQuery)) {
             throw new Error('Error creating table:' . $this->db->conn->error);
         }
     }
 
-    public function isTableExists(string $tableName): bool
-    {
-        $checkTableQuery = "SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = '$tableName'";
-        $result = $this->db->conn->query($checkTableQuery);
-
-        return $result && $result->num_rows > 0;
-    }
-
     public function fillDemoData(): void
     {
-        $insertTableQuery = "INSERT IGNORE INTO products (name, price, created_at, category_id) VALUES
-('Ноутбук ASUS VivoBook', 799.99, '2023-01-01 12:00:00', 1),
-('Смартфон Samsung Galaxy S21', 899.99, '2023-02-15 15:30:00', 2),
-('Гарнітура Sony WH-1000XM4', 349.99, '2023-03-10 08:45:00', 3),
-('Планшет Apple iPad Pro', 1099.99, '2023-04-20 18:20:00', 4),
-('Ноутбук Dell XPS 13', 1299.99, '2023-05-05 10:10:00', 1),
-('Смарт-годинник Apple Watch Series 6', 399.99, '2023-06-30 21:45:00', 2),
-('Фотокамера Canon EOS R5', 3499.99, '2023-07-12 14:15:00', 3),
-('Телевізор LG OLED CX', 1499.99, '2023-08-25 09:30:00', 4),
-('Ігрова консоль Sony PlayStation 5', 499.99, '2023-09-05 17:00:00', 1),
-('Навушники Bose QuietComfort 35 II', 299.99, '2023-10-18 12:40:00', 2),
-('Смартфон Google Pixel 6', 699.99, '2023-11-01 08:00:00', 3),
-('Ноутбук HP Spectre x360', 1199.99, '2023-12-15 19:20:00', 4),
-('Смарт-колонка Amazon Echo Dot', 49.99, '2024-01-10 14:50:00', 1),
-('Фітнес-трекер Fitbit Charge 4', 149.99, '2024-02-22 11:15:00', 2),
-('Монітор Samsung Odyssey G9', 1299.99, '2024-03-08 16:30:00', 3),
-('Відеокарта NVIDIA GeForce RTX 3080', 699.99, '2024-04-18 22:10:00', 4),
-('Електронна книга Kindle Paperwhite', 129.99, '2024-05-30 10:05:00', 1),
-('Геймпад Xbox Wireless Controller', 59.99, '2024-06-14 13:25:00', 2),
-('Робот-пилосос iRobot Roomba', 299.99, '2024-07-20 15:50:00', 3),
-('Смарт-термостат Nest Learning Thermostat', 249.99, '2024-08-05 09:15:00', 4);";
+        $insertTableQuery = "INSERT IGNORE INTO ".self::TABLE_NAME." (name, price, created_at, category_id) VALUES
+('Смартфон iPhone 12', 799.99, '2023-01-15', 1),
+('Смартфон Samsung Galaxy S21', 699.99, '2023-02-20', 1),
+('Смартфон Google Pixel 6', 899.99, '2023-03-10', 1),
+('Смартфон OnePlus 9', 999.99, '2023-04-05', 1),
+('Смартфон Xiaomi Mi 11', 1099.99, '2023-05-18', 1),
+('Смартфон Huawei P40', 1199.99, '2023-06-22', 1),
+('Смартфон Sony Xperia 5 III', 1299.99, '2023-07-30', 1),
+('Навушники AirPods Pro', 249.99, '2023-01-22', 2),
+('Навушники Sony WH-1000XM4', 349.99, '2023-02-25', 2),
+('Навушники Bose QuietComfort 35 II', 299.99, '2023-03-15', 2),
+('Навушники Jabra Elite 85t', 199.99, '2023-04-10', 2),
+('Навушники Samsung Galaxy Buds Pro', 179.99, '2023-05-25', 2),
+('Камера Canon EOS R5', 3499.99, '2023-01-05', 3),
+('Камера Sony Alpha A7 III', 1999.99, '2023-02-08', 3),
+('Камера Nikon Z6', 1799.99, '2023-03-20', 3),
+('Камера Panasonic Lumix GH5', 2299.99, '2023-04-15', 3),
+('Камера Fujifilm X-T4', 1699.99, '2023-05-30', 3),
+('Планшет iPad Pro', 1099.99, '2023-01-10', 4),
+('Планшет Samsung Galaxy Tab S7', 799.99, '2023-02-12', 4),
+('Планшет Huawei MatePad Pro', 899.99, '2023-03-25', 4),
+('Планшет Lenovo Tab P11', 299.99, '2023-04-18', 4),
+('Планшет Amazon Fire HD 10', 149.99, '2023-05-22', 4);";
 
         if (!$this->db->conn->query($insertTableQuery)) {
             throw new Error('Error insert demo data:' . $this->db->conn->error);

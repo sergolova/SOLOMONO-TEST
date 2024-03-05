@@ -69,4 +69,12 @@ class DatabaseManager
         $this->conn->close();
     }
 
+    public function isTableExists(string $tableName): bool
+    {
+        $checkTableQuery = "SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = '$tableName'";
+        $result = $this->conn->query($checkTableQuery);
+
+        return $result && $result->num_rows > 0;
+    }
+
 }

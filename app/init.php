@@ -27,3 +27,8 @@ const STYLES_DIR = PROJECT_DIR . DIRECTORY_SEPARATOR . 'View' . DIRECTORY_SEPARA
 const CONTROLLER_DIR = PROJECT_DIR . DIRECTORY_SEPARATOR . 'Controller';
 const CONFIG_DIR = PROJECT_DIR . DIRECTORY_SEPARATOR . 'Config';
 define("STYLES_URL", 'http://' . $_SERVER['HTTP_HOST'] . '/View/Styles');
+
+// CREATE TABLES in right order!
+
+\Model\CategoryManager::getInstance();
+\Model\ProductManager::getInstance();

@@ -3,19 +3,18 @@
 namespace Model;
 
 use Error;
-use Exception;
 
 class CategoryManager
 {
     private static ?CategoryManager $instance = null;
     private readonly DatabaseManager $db;
-    private const TABLE_NAME = 'categories';
+    public const TABLE_NAME = 'product_categories';
     private const CHARSET = 'utf8mb4_unicode_ci';
 
     public function __construct()
     {
         $this->db = DatabaseManager::getDatabaseManager();
-        if (!$this->isTableExists(self::TABLE_NAME)) {
+        if (!$this->db->isTableExists(self::TABLE_NAME)) {
             $this->install();
             $this->fillDemoData();
         }
@@ -41,17 +40,9 @@ class CategoryManager
         }
     }
 
-    public function isTableExists(string $tableName): bool
-    {
-        $checkTableQuery = "SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = '$tableName'";
-        $result = $this->db->conn->query($checkTableQuery);
-
-        return $result && $result->num_rows > 0;
-    }
-
     public function fillDemoData(): void
     {
-        $categories = ['Laptops', 'Smartphones', 'Headphones', 'Cameras', 'Tablets'];
+        $categories = ['Смартфони', 'Навушники', 'Камери', 'Планшети', 'Геймпади'];
 
         foreach ($categories as $category) {
             $insertCategoryQuery = 'INSERT INTO ' . self::TABLE_NAME . ' (name) VALUES (?)';

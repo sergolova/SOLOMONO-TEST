@@ -10,9 +10,9 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel='icon' href='/View/Images/favicon.ico' type='image/x-icon'>
-<!--    <link rel='preload' href='/View/Images/bg.webp' as="image">-->
-<!--    <link rel='prerender' href='/View/Images/bg.webp'>-->
-    <title><?= $title ?? 'TestStore' ?></title>
+    <link rel='preload' href='/View/Images/logo-dan.webp' as="image">
+    <link rel='prerender' href='/View/Images/logo-dan.webp'>
+    <title><?= $title ?? 'Test Store' ?></title>
     <link href='https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css' rel='stylesheet'
           integrity='sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH' crossorigin='anonymous'>
     <script src='/View/Scripts/main.js' defer></script>
@@ -29,11 +29,9 @@
 </head>
 <body>
 <header>
-    <div class='logo'>
-        <a href='/'>
-            <img src='/View/Images/logo-dan.webp' alt='Logo' class='logo-image'>
-            TEST STORE
-        </a>
-    </div>
+    <a href='/' class='logo'>
+        <img src='/View/Images/logo-dan.webp' alt='Logo' class='logo-image'>
+        <div class="logo-label">TEST STORE</div>
+    </a>
 </header>
 <main>

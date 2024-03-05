@@ -7,16 +7,16 @@ use Model\Category;
 class ProductController extends CommonController
 {
     const SORT_OPTIONS = [
-        'alphabetically' => 'A -> Z',
-        'cheap_first' => 'Cheap first',
-        'new_first' => 'New first'
+        'alphabetically' => 'По алфавіту',
+        'cheap_first' => 'Спочатку дешевші',
+        'new_first' => 'Спочатку нові'
     ];
 
     public function home(): void
     {
         $sort_name = array_keys(self::SORT_OPTIONS)[0]; // default
         $categories = $this->categoryManager->getCategories();
-        $current_category = $categories ? $categories[0]->id : 0; // default
+        $current_category = $categories ? $categories[1]->id : 0; // default
 
         $categoriesEx = array_map(fn(Category $cat) => [
             'cat' => $cat,
