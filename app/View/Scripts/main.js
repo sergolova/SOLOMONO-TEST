@@ -1,83 +1,81 @@
-document.addEventListener('DOMContentLoaded', function() {
-    // Найти все элементы категорий
-    var categoryItems = document.querySelectorAll('#categories li');
+document.addEventListener('DOMContentLoaded', function () {
+    const categoryItems = document.querySelectorAll('#categories li');
 
-    // Перебрать элементы и добавить обработчик события для каждого
-    categoryItems.forEach(function(categoryItem) {
+    categoryItems.forEach((categoryItem) =>
+        categoryItem.addEventListener('click', onCategoryChange)
+    );
 
-        categoryItem.addEventListener('click', function(event) {
-            // Получить id выбранной категории
-            var categoryId = this.getAttribute('data-category-id');
+    document.getElementById('sort-selector')?.addEventListener('change', onSortChange);
 
-            var catItems = document.querySelectorAll('#categories li');
-            catItems.forEach((elem)=>elem.classList.remove('active-category'));
-            event.target.classList.add('active-category');
+    updateProducts();
 
-            // Получить текущий выбранный порядок сортировки (предположим, что он хранится в переменной sortName)
-            var sortName = 'alphabetically'; // Замените это на фактическую логику получения порядка сортировки
+    function onSortChange() {
+        updateProducts();
+    }
 
-            // Отправить AJAX-запрос
-            var xhr = new XMLHttpRequest();
-            const url = '/getProductsAjax?category_id=' + categoryId + '&sort_name=' + sortName;
-            console.log(url);
-            xhr.open('GET', url, true);
+    function onCategoryChange() {
+        const catItems = document.querySelectorAll('#categories li');
 
-            // Определить обработчик события для завершения запроса
-            xhr.onload = function() {
-                if (xhr.status >= 200 && xhr.status < 400) {
-                    var jsonResponse = JSON.parse(xhr.responseText);
-                    console.log(jsonResponse);
-                    updateProductList(jsonResponse.products);
-                } else {
-                    console.error('Request failed with status', xhr.status);
-                }
-            };
+        catItems.forEach((elem) => elem.classList.remove('active-category'));
+        this.classList.add('active-category');
 
-            // Обработать возможные ошибки запроса
-            xhr.onerror = function() {
-                console.error('Request failed');
-            };
+       updateProducts();
+    }
 
-            // Отправить запрос
-            xhr.send();
-        });
-    });
+    function updateProductItem(listItem, product) {
+        listItem.setAttribute('data-product-id', product.id);
+        listItem.dataset.productId = product.id;
+        listItem.querySelector('.product-name').textContent = product.name;
+        listItem.querySelector('.product-price').textContent = product.price;
+        listItem.querySelector('.product-created_at').textContent = product.created_at;
+    }
 
     function updateProductList(products) {
-        var productList = document.getElementById('product-list');
-        var productTemplate = document.querySelector('.product-item[data-product-id="0"]')
+        const productList = document.getElementById('product-list');
+        const productTemplate = document.querySelector('.product-item[data-product-id="0"]')
 
-        // Удаляем все дочерние элементы с классом .product-item
-        var productItems = document.querySelectorAll('.product-item');
-        productItems.forEach(function(item) {
-            if (item !== productTemplate) {
-                item.remove();
-            }
-        });
+        const productItems = document.querySelectorAll('.product-item');
+        productItems && productItems.forEach((item) => (item !== productTemplate) && item.remove());
 
-        // Перебрать полученные товары и добавить их в список
-        products.forEach(function(product) {
-            // Клонировать шаблон товара
-            var listItem = productTemplate.cloneNode(true);
-            // Заменить значения в клоне данными из полученного товара
-            listItem.setAttribute('data-product-id', product.id);
-            listItem.querySelector('.product-name').textContent = product.name;
-            listItem.querySelector('.product-price').textContent = product.price;
-            listItem.querySelector('.product-created_at').textContent = product.created_at;
-
-            // Добавить клон в список товаров
+        products.forEach(function (product) {
+            const listItem = productTemplate.cloneNode(true);
+            updateProductItem(listItem, product)
             productList.appendChild(listItem);
         });
     }
-});
 
-document.addEventListener("DOMContentLoaded", function () {
-    // Получаем первый элемент категории
-    var firstCategory = document.querySelector('#categories ul li:first-child');
+    function fetchProducts() {
+        const activeCategory = document.querySelector('#categories ul li.active-category');
+        const categoryId = activeCategory.dataset.categoryId;
+        const sortSelector = document.getElementById('sort-selector');
+        const sortName = sortSelector.value;
+        const url = '/getProductsAjax?category_id=' + categoryId + '&sort_name=' + sortName;
 
-    // Проверяем, что элемент существует, прежде чем добавлять обработчик событий
-    if (firstCategory) {
-        // Вызываем событие click на первом элементе
-        firstCategory.click();
+        const xhr = new XMLHttpRequest();
+        xhr.open('GET', url, true);
+        xhr.onload = () => {
+            if (xhr.status >= 200 && xhr.status < 400) {
+                const jsonResponse = JSON.parse(xhr.responseText);
+                updateProductList(jsonResponse.products);
+            } else {
+                console.error('Request failed with status', xhr.status);
+            }
+        };
+        xhr.onerror = () => console.error('Request failed');
+        xhr.send();
+    }
+
+    function updateProducts() {
+        fetchProducts();
+        updateURL();
+    }
+
+    function updateURL() {
+        const activeCategory = document.querySelector('#categories li.active-category');
+        const sortSelector = document.getElementById('sort-selector');
+        const categoryId = activeCategory.dataset.categoryId;
+        const sortValue = sortSelector.value;
+        const newURL = window.location.origin + window.location.pathname + '?category_id=' + categoryId + '&sort_name=' + sortValue;
+        history.replaceState(null, null, newURL);
     }
 });

@@ -75,25 +75,4 @@ class Router
 
         $this->processNotFound();
     }
-
-    public function redirect(string $to, array $params=[], int $code = 302): never
-    {
-        if (!empty($params)) {
-            $to .= '?' . http_build_query($params);
-        }
-        header("Location: $to", true, $code);
-        exit;
-    }
-
-    public function redirectToName(string $name, array $params=[], int $code = 302): never
-    {
-        foreach ($this->routes as $route) {
-            if (@$route['name'] === $name && isset($route['route'])) {
-                $this->redirect($route['route'], $params,$code);
-            }
-        }
-
-        $this->processNotFound();
-        exit;
-    }
 }

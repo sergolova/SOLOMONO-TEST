@@ -1,10 +1,9 @@
 <?php
-/** @var array $categories */
-/** @var array $products */
-/** @var Product $product */
+/** @var array<> $categories */
+/** @var array<Model\Product> $products */
 /** @var string $sortName */
+/** @var array<string> $sortOptions */
 /** @var int $currentCategory */
-
 /** @var string $message */
 /** @var string $messageType */
 
@@ -18,8 +17,10 @@ include 'HeaderTemplate.php';
             <h2>Categories</h2>
             <ul>
                 <?php foreach ($categories as $category): ?>
-                    <li data-category-id="<?= $category['cat']->id; ?>" class="<?=$category['cat']->id === $currentCategory ? 'active-category' : '' ?>">
-                        <?= $category['cat']->name; ?> (<span class="product-count"><?= $category['numProducts'] ?></span>)
+                    <li data-category-id="<?= $category['cat']->id; ?>"
+                        class="<?= $category['cat']->id === $currentCategory ? 'active-category' : '' ?>">
+                        <?= $category['cat']->name; ?> (<span
+                            class="product-count"><?= $category['numProducts'] ?></span>)
                     </li>
                 <?php endforeach; ?>
             </ul>
@@ -27,23 +28,28 @@ include 'HeaderTemplate.php';
 
         <div id="products">
             <h2>Products</h2>
-            <select id="sort-selector">
-                <option value="price">Cheaper first</option>
-                <option value="name">Alphabetical order</option>
-                <option value="created_at">Newer first</option>
+            <select id="sort-selector" <?=$sortName ?>>
+                <?php foreach ($sortOptions as $key => $title): ?>
+                    <option value="<?= $key ?>" <?= $key === $sortName ? 'selected' : '' ?>><?= $title ?></option>
+                <?php endforeach; ?>
             </select>
             <ul id="product-list" class="product-grid">
-                    <li data-product-id="0" class="product-item">
-                        <div class="product-info">
-                            <p class='product-name'></p>
-                            <p class='product-price'></p>
-                            <p class='product-created_at'></p>
-                        </div>
-                        <button class="buy-button" onclick="showModal('0')">Buy</button>
-                    </li>
+                <li data-product-id="0" class="product-item">
+                    <div class="product-info">
+                        <p class='product-name'></p>
+                        <p class='product-price'></p>
+                        <p class='product-created_at'></p>
+                    </div>
+                    <button class="buy-button" data-bs-toggle='modal'
+                            data-bs-target='#buyModal'
+                            onclick='openModal(this)'
+                    >Buy</button>
+                </li>
             </ul>
         </div>
     </div>
+
 <?php
+include 'ProductModalTemplate.php';
 include 'FooterTemplate.php';
 ?>

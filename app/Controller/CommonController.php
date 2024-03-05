@@ -19,16 +19,6 @@ class CommonController
         $this->router = Router::getInstance();
     }
 
-    /** Checks the CSRF token and, if there is a mismatch, throws a 405 error
-     * @return void
-     */
-    public function csrfCheck(): void
-    {
-//        if (!isset($_POST['csrf_token']) || ($_POST['csrf_token'] !== $this->productManager->getCsrfToken())) {
-//            $this->exitWithError('Invalid CSRF Token', 405);
-//        }
-    }
-
     /**
      * @param string $name -template name relative to templates folder
      * @param array $args - variables that will be available in the template

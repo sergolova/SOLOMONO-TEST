@@ -14,14 +14,6 @@ class Category
         ];
     }
 
-    public function validate(): bool
-    {
-        $c = self::constraints();
-
-        return trim($this->name) !== ''
-            && mb_strlen($this->name) <= $c['max_name_length'];
-    }
-
     public static function FromArray(array $row): Category
     {
         $cat = new Category();
