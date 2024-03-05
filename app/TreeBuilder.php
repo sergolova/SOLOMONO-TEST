@@ -78,6 +78,11 @@ function addTestTable(\Model\DatabaseManager $db)
 
 $db = \Model\DatabaseManager::getDatabaseManager();
 addTestTable($db);
+
+$start_time = microtime(true);
 $categoryTree = buildCategoryTree($db);
 transformEmptyArrays(0, $categoryTree);
+$execution_time = microtime(true) - $start_time;
+echo "TIME: $execution_time seconds\n\n";
+
 print_r($categoryTree);
