@@ -62,6 +62,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function fetchProducts() {
         const activeCategory = document.querySelector('#categories ul li.active-category');
+
         if (activeCategory) {
             const categoryId = activeCategory.dataset.categoryId;
             const sortSelector = document.getElementById('sort-selector');
@@ -90,6 +91,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function updateURL() {
         const activeCategory = document.querySelector('#categories li.active-category');
+
         if (activeCategory) {
             const sortSelector = document.getElementById('sort-selector');
             const categoryId = activeCategory.dataset.categoryId;

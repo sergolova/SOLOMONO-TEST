@@ -4,8 +4,6 @@
 /** @var string $sortName */
 /** @var array<string> $sortOptions */
 /** @var int $currentCategory */
-/** @var string $message */
-/** @var string $messageType */
 
 include 'HeaderTemplate.php';
 ?>
@@ -41,8 +39,7 @@ include 'HeaderTemplate.php';
                         <div class='product-created_at'></div>
                     </div>
                     <button class="btn buy-button" data-bs-toggle='modal'
-                            data-bs-target='#buyModal'
-                    >Купити
+                            data-bs-target='#buyModal'>Купити
                     </button>
                 </li>
             </ul>

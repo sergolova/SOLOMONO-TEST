@@ -28,4 +28,4 @@ http://localhost:8000/TreeBuilder.php
 
 ----------------------------------------------------------------------------
 
-more info in **/access/ folder**
+more info in **/access/** folder
