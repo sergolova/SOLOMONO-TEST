@@ -9,9 +9,9 @@ System Requirements:
 
 Database Configuration in **/app/Config/db.json**:  
 {  
-"server": "localhost",  
+"server": "localhost:3306",  
 "user": "root",  
-"password": "",  
+"password": null,  
 "db": "test"  
 }
 

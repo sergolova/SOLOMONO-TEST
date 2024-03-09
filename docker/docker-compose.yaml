@@ -1,0 +1,16 @@
+version: '3.7'
+
+services:
+
+  db:
+    build: ./db
+    container_name: sql-db
+    restart: always
+    tty: true
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_ALLOW_EMPTY_PASSWORD: 1
+    ports:
+      - ${DB_PORT}:3306
+    volumes:
+       - ${DB_PATH}:/var/lib/mysql

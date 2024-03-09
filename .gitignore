@@ -1,5 +1,6 @@
 /.idea/
 /temp/
+/docker/database
 *.log
 *.bak
 *.*#
