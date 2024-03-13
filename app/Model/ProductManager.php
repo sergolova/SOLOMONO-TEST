@@ -109,7 +109,7 @@ class ProductManager
 
     public function getProductsCount(int $category_id): int
     {
-        $query = 'SELECT * FROM ' . self::TABLE_NAME . " WHERE category_id = $category_id";
+        $query = 'SELECT COUNT(id) as c FROM ' . self::TABLE_NAME . " WHERE category_id = $category_id";
         $statement = $this->db->conn->prepare($query);
 
         if ($statement) {
@@ -118,7 +118,7 @@ class ProductManager
             $rows = $result->fetch_all(MYSQLI_ASSOC);
             $statement->close();
 
-            return count($rows);
+            return $rows[0]['c'];
         }
         return 0;
     }

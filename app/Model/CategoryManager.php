@@ -57,7 +57,7 @@ class CategoryManager
 
     public function getCategory(int $id): ?Category
     {
-        $query = 'SELECT * FROM ' . self::TABLE_NAME . ' WHERE id = ?';
+        $query = 'SELECT id, name FROM ' . self::TABLE_NAME . ' WHERE id = ?';
         $statement = $this->db->conn->prepare($query);
         $row = null;
 
@@ -73,7 +73,7 @@ class CategoryManager
 
     public function getCategories(): array
     {
-        $query = 'SELECT * FROM ' . self::TABLE_NAME . ' ORDER BY name ASC';
+        $query = 'SELECT id, name FROM ' . self::TABLE_NAME . ' ORDER BY name ASC';
         $statement = $this->db->conn->prepare($query);
 
         if ($statement) {
